@@ -17,19 +17,22 @@ export const PostOperationSection: React.FC<PostOperationSectionProps> = ({
   errors,
 }) => {
   return (
-    <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-primary">
-      <h3 className="text-xl font-bold text-primary mb-6">
+    <div className="form-section-bordered">
+      <div className="yellow-section-header mb-4">
         บันทึกข้อมูล หลังดำเนินการ
-      </h3>
+      </div>
 
       {/* Work Procedures */}
-      <div className="bg-white p-4 rounded mb-6">
-        <h4 className="font-bold mb-3">รายละเอียดการทำงาน:</h4>
-        <ol className="list-decimal pl-5 space-y-2">
+      <div className="border border-black p-4 mb-6">
+        <h4 className="font-bold mb-3"># รายละเอียดการทำงาน</h4>
+        <div className="space-y-2">
           {WORK_PROCEDURES.map((procedure, index) => (
-            <li key={index} className="leading-relaxed">{procedure}</li>
+            <div key={index} className="flex items-start gap-3">
+              <input type="checkbox" className="mt-1" disabled />
+              <span className="leading-relaxed">{procedure}</span>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
 
       {/* Refrigerant Measurements */}

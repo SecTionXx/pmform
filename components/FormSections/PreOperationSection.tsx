@@ -28,10 +28,10 @@ export const PreOperationSection: React.FC<PreOperationSectionProps> = ({
   errors,
 }) => {
   return (
-    <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-primary">
-      <h3 className="text-xl font-bold text-primary mb-6">
+    <div className="form-section-bordered">
+      <div className="yellow-section-header mb-4">
         บันทึกข้อมูล ก่อนดำเนินการ (CHECK LIST)
-      </h3>
+      </div>
 
       {/* Date and Time */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

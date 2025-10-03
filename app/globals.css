@@ -8,6 +8,8 @@
   --primary: #4e2a84;
   --secondary: #c41e3a;
   --background: #f5f5f5;
+  --yellow-header: #ffeb3b;
+  --border-color: #000;
 }
 
 body {
@@ -18,5 +20,62 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Form checkbox styling to match printed form */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+
+input[type="checkbox"]:checked::before,
+input[type="radio"]:checked::before {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+input[type="radio"] {
+  border-radius: 0;
+}
+
+/* Yellow section header */
+.yellow-section-header {
+  background-color: #ffeb3b;
+  border: 2px solid #000;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Form section with border */
+.form-section-bordered {
+  border: 2px solid #000;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .container {
+    box-shadow: none;
+  }
+  button {
+    display: none;
   }
 }

@@ -66,7 +66,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen py-8 px-4">
-      <div className="container max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+      <div className="container max-w-4xl mx-auto bg-white border-2 border-black p-8">
         <FormHeader />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
