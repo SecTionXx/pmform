@@ -8,9 +8,12 @@ import { PreOperationSection } from '@/components/FormSections/PreOperationSecti
 import { PostOperationSection } from '@/components/FormSections/PostOperationSection';
 import { SignatureSection } from '@/components/FormSections/SignatureSection';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { useFormDraft } from '@/hooks/useFormDraft';
+import { useOffline } from '@/hooks/useOffline';
 import { draftStorage } from '@/lib/storage';
+import { addToQueue, hasPendingSubmissions } from '@/lib/offlineQueue';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -35,6 +38,9 @@ export default function Home() {
     getValues,
     watch,
   } = form;
+
+  // Offline detection
+  const { isOffline, isOnline } = useOffline();
 
   // Draft management
   const { hasDraft, loadDraft, clearDraft, draftAge } = useFormDraft({
@@ -65,6 +71,30 @@ export default function Home() {
     setIsSubmitting(true);
     setSubmitError(null);
 
+    // If offline, queue the submission
+    if (isOffline) {
+      try {
+        const submissionId = addToQueue(data);
+        console.log('Queued submission for offline sync:', submissionId);
+
+        // Clear draft
+        clearDraft();
+
+        // Show success message
+        setSubmitError(null);
+
+        // Redirect to success page with offline flag
+        router.push('/success?offline=true');
+      } catch (error) {
+        console.error('Failed to queue submission:', error);
+        setSubmitError('ไม่สามารถบันทึกข้อมูลในโหมดออฟไลน์ได้');
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+
+    // Online submission
     try {
       const response = await fetch('/api/submit-form', {
         method: 'POST',
@@ -86,6 +116,19 @@ export default function Home() {
       router.push('/success');
     } catch (error) {
       console.error('Submit error:', error);
+
+      // If network error, queue for offline sync
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        try {
+          const submissionId = addToQueue(data);
+          console.log('Network error, queued submission:', submissionId);
+          router.push('/success?offline=true');
+          return;
+        } catch (queueError) {
+          console.error('Failed to queue submission:', queueError);
+        }
+      }
+
       setSubmitError(error instanceof Error ? error.message : 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } finally {
       setIsSubmitting(false);
@@ -121,6 +164,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen py-8 px-4">
+      {/* Offline Indicator */}
+      <OfflineIndicator />
+
       {/* Draft prompt dialog */}
       {showDraftPrompt && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

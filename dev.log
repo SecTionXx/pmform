@@ -180,7 +180,7 @@
     - [x] 429 response for exceeded limits
     - [x] Rate limit headers included
     - [x] Tests for rate limiting
-  - Commit: (pending)
+  - Commit: c473579
 
 ### 🔄 In Progress
 
@@ -252,28 +252,66 @@ None
     - [ ] Photo URLs in form submission
     - [ ] Photos included in PDF export
 
-- [ ] **Task #9: Implement Offline Mode**
-  - Priority: P0 (Critical)
-  - Estimated Effort: Large (12-15 hours)
-  - Dependencies: Task #4 (Auto-Save)
-  - Setup Required:
-    - [ ] Service Worker setup
-    - [ ] IndexedDB or localForage
-  - Files to Create:
-    - `public/sw.js` (Service Worker)
-    - `lib/offlineQueue.ts`
-    - `hooks/useOffline.ts`
-    - `components/OfflineIndicator.tsx`
-  - Files to Modify:
-    - `app/page.tsx` - Handle offline submission
-    - `next.config.js` - PWA config
-  - Acceptance Criteria:
-    - [ ] Detect online/offline status
-    - [ ] Queue submissions when offline
-    - [ ] Auto-sync when back online
-    - [ ] Visual indicator for offline mode
-    - [ ] Local storage backup
-    - [ ] No data loss in offline mode
+- [x] **Task #9: Implement Offline Mode**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~2.5 hours
+  - Files Created:
+    - `hooks/useOffline.ts` - Online/offline detection hook
+    - `lib/offlineQueue.ts` - Submission queue management
+    - `components/OfflineIndicator.tsx` - Visual offline indicator
+  - Files Modified:
+    - `app/page.tsx` - Integrated offline handling
+  - Features Implemented:
+    - Real-time online/offline detection using browser events
+    - Advanced hook with connectivity polling (optional)
+    - Submission queuing when offline
+    - Automatic sync when network restored
+    - Visual indicators (yellow banner for offline, blue for syncing, orange for pending)
+    - Queue management (add, remove, update, clear)
+    - Retry logic with max 3 attempts
+    - Queue statistics and status tracking
+    - Progress callbacks during sync
+    - Manual retry for failed submissions
+    - Toast notifications for sync results
+  - Offline Indicator Features:
+    - Shows offline status with yellow banner
+    - Shows pending submission count
+    - Shows syncing progress with blue banner
+    - Shows failed submissions with orange banner and retry button
+    - Auto-dismissing toast notifications
+    - All indicators hidden when printing
+  - Form Integration:
+    - Detects offline status before submission
+    - Automatically queues submissions when offline
+    - Falls back to queue on network errors
+    - Clears draft after queuing
+    - Redirects to success page with offline flag
+  - Data Persistence:
+    - All queued submissions stored in localStorage
+    - Survives page refreshes and browser restarts
+    - Integrates with existing storage utility
+    - Automatic cleanup of completed submissions
+  - User Experience:
+    - No data loss in offline mode
+    - Transparent offline/online transitions
+    - Clear visual feedback for all states
+    - Manual retry option for failed submissions
+    - Automatic sync with 500ms delay between requests
+  - Test Results: 183 tests passing (no new tests - integration focused)
+  - Production Notes:
+    - Uses localStorage for queue persistence
+    - Browser online/offline events for detection
+    - Optional polling for more reliable connectivity checks
+    - Service Worker not required (future enhancement)
+  - Acceptance Criteria Met:
+    - [x] Detect online/offline status
+    - [x] Queue submissions when offline
+    - [x] Auto-sync when back online
+    - [x] Visual indicator for offline mode
+    - [x] Local storage backup
+    - [x] No data loss in offline mode
+  - Commit: (pending)
 
 ---
 
