@@ -17,6 +17,7 @@ export default function Home() {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     getValues,
@@ -71,7 +72,7 @@ export default function Home() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <PreOperationSection register={register} errors={errors} />
-          <PostOperationSection register={register} errors={errors} />
+          <PostOperationSection register={register} control={control} errors={errors} />
           <SignatureSection />
 
           {submitError && (

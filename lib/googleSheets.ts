@@ -76,6 +76,12 @@ export async function appendToGoogleSheet(formData: FormValues) {
         formData.cannot_proceed || '',
         bankApprovalText,
         formData.not_approved_reason || '',
+        formData.work_procedures?.step1 ? 'เสร็จ' : 'ไม่ได้ทำ',
+        formData.work_procedures?.step2 ? 'เสร็จ' : 'ไม่ได้ทำ',
+        formData.work_procedures?.step3 ? 'เสร็จ' : 'ไม่ได้ทำ',
+        formData.work_procedures?.step4 ? 'เสร็จ' : 'ไม่ได้ทำ',
+        formData.work_procedures?.step5 ? 'เสร็จ' : 'ไม่ได้ทำ',
+        formData.work_procedures?.step6 ? 'เสร็จ' : 'ไม่ได้ทำ',
         formData.refrigerant_pressure,
         formData.refrigerant_added,
         formData.repair_work_detail || '',
@@ -88,7 +94,7 @@ export async function appendToGoogleSheet(formData: FormValues) {
     // Append to sheet
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetName}!A:AB`,
+      range: `${sheetName}!A:AH`,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values,

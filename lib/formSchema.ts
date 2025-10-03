@@ -56,6 +56,14 @@ export const formSchema = z.object({
   not_approved_reason: z.string().optional(),
 
   // Post-Operation
+  work_procedures: z.object({
+    step1: z.boolean().default(false),
+    step2: z.boolean().default(false),
+    step3: z.boolean().default(false),
+    step4: z.boolean().default(false),
+    step5: z.boolean().default(false),
+    step6: z.boolean().default(false),
+  }).optional(),
   refrigerant_pressure: z.string().min(1, 'กรุณากรอกแรงดันน้ำยาแอร์'),
   refrigerant_added: z.string().min(1, 'กรุณากรอกปริมาณน้ำยาที่เติม'),
   repair_work_detail: z.string().optional(),

@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { UseFormRegister, FieldErrors, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { FormValues } from '@/lib/formSchema';
 import { TextInput } from '../FormFields/TextInput';
 import { TextArea } from '../FormFields/TextArea';
@@ -9,11 +10,13 @@ import { WORK_PROCEDURES, TEMPERATURE_SETTING, MAINTENANCE_INTERVAL } from '@/ut
 
 interface PostOperationSectionProps {
   register: UseFormRegister<FormValues>;
+  control: Control<FormValues>;
   errors: FieldErrors<FormValues>;
 }
 
 export const PostOperationSection: React.FC<PostOperationSectionProps> = ({
   register,
+  control,
   errors,
 }) => {
   return (
@@ -28,7 +31,20 @@ export const PostOperationSection: React.FC<PostOperationSectionProps> = ({
         <div className="space-y-2">
           {WORK_PROCEDURES.map((procedure, index) => (
             <div key={index} className="flex items-start gap-3">
-              <input type="checkbox" className="mt-1" />
+              <Controller
+                name={`work_procedures.step${index + 1}` as any}
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <input
+                    type="checkbox"
+                    className="mt-1"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                  />
+                )}
+              />
               <span className="leading-relaxed">{procedure}</span>
             </div>
           ))}

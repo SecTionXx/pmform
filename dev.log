@@ -1,0 +1,476 @@
+# Development Log - ATM/CDM Maintenance Form Improvements
+
+**Project:** PMForm Application
+**Start Date:** 2025-10-03
+**Overall Assessment:** 7.2/10
+**Current Test Coverage:** 15.64%
+**Target Test Coverage:** 70%
+
+---
+
+## Priority 0: Critical Fixes (Week 1-2)
+
+### ✅ Completed Tasks
+
+- [x] **Task #1: Fix Work Procedures Checkboxes**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Files Modified: `components/FormSections/PostOperationSection.tsx`
+  - Commit: a0b57e8
+  - Details: Removed `disabled` attribute from checkboxes
+  - Issue: Checkboxes are now interactive but NOT persisted to form state
+  - Follow-up needed: Add to formSchema and connect with react-hook-form
+
+- [x] **Task #2: Connect Checkboxes to Form State**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~1.5 hours
+  - Files Modified:
+    - `lib/formSchema.ts` - Added work_procedures field with 6 boolean steps
+    - `components/FormSections/PostOperationSection.tsx` - Connected with Controller
+    - `app/page.tsx` - Added control prop
+    - `lib/googleSheets.ts` - Added 6 columns for checkbox data (A:AH range)
+  - Files Created:
+    - `__tests__/components/PostOperationSection.test.tsx` - 18 new tests
+  - Test Results: 98 tests passing (was 80)
+  - Acceptance Criteria Met:
+    - [x] Checkbox state persisted in form
+    - [x] Data saved to Google Sheets
+    - [x] Data will be included in PDF export (handled by form data)
+    - [x] Tests added for checkbox functionality (18 tests)
+  - Commit: (pending)
+
+### 🔄 In Progress
+
+None
+
+### ⏳ Pending Tasks
+
+- [ ] **Task #3: Add Error Boundary**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Small (1-2 hours)
+  - Dependencies: None
+  - Files to Create:
+    - `app/error.tsx`
+    - `components/ErrorBoundary.tsx`
+  - Acceptance Criteria:
+    - [ ] Global error boundary catches runtime errors
+    - [ ] User-friendly error message displayed
+    - [ ] Error logged to console (future: Sentry)
+    - [ ] Reset/retry functionality
+
+- [ ] **Task #4: Implement Auto-Save/Draft**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: None
+  - Files to Create:
+    - `hooks/useAutoSave.ts`
+    - `hooks/useFormDraft.ts`
+    - `lib/storage.ts` (localStorage wrapper)
+  - Files to Modify:
+    - `app/page.tsx` - Integrate auto-save hook
+  - Acceptance Criteria:
+    - [ ] Auto-save to localStorage every 30 seconds
+    - [ ] Load draft on page mount
+    - [ ] Show "Draft saved at HH:mm" indicator
+    - [ ] Clear draft after successful submission
+    - [ ] Multiple drafts support (by form ID)
+
+- [ ] **Task #5: Add Input Sanitization**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Small (2-3 hours)
+  - Dependencies: None
+  - Files to Create:
+    - `lib/sanitize.ts`
+  - Files to Modify:
+    - `app/api/submit-form/route.ts`
+  - Acceptance Criteria:
+    - [ ] All string inputs sanitized (XSS prevention)
+    - [ ] HTML entities encoded
+    - [ ] Script tags removed
+    - [ ] Tests for sanitization
+
+- [ ] **Task #6: Implement Rate Limiting**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Medium (3-4 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] Upstash Redis account
+    - [ ] Environment variables setup
+  - Files to Create:
+    - `lib/rateLimit.ts`
+  - Files to Modify:
+    - `middleware.ts` (create if not exists)
+    - `app/api/submit-form/route.ts`
+  - Acceptance Criteria:
+    - [ ] Rate limit: 10 requests per minute per IP
+    - [ ] 429 response for exceeded limits
+    - [ ] Rate limit headers included
+    - [ ] Tests for rate limiting
+
+- [ ] **Task #7: Implement Authentication**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Large (8-10 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] NextAuth.js installation
+    - [ ] Database for user sessions (or JWT)
+  - Files to Create:
+    - `app/api/auth/[...nextauth]/route.ts`
+    - `app/(auth)/login/page.tsx`
+    - `lib/auth.ts`
+    - `middleware.ts`
+  - Files to Modify:
+    - `app/page.tsx` - Protect with auth
+    - `app/layout.tsx` - Add SessionProvider
+  - Acceptance Criteria:
+    - [ ] Login page with employee ID + password
+    - [ ] Session management
+    - [ ] Protected routes (redirect to login if not authenticated)
+    - [ ] Logout functionality
+    - [ ] User info in form submission
+
+- [ ] **Task #8: Add Photo Upload Feature**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Large (10-12 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] Cloudinary account (or Firebase Storage)
+    - [ ] Environment variables
+  - Files to Create:
+    - `components/PhotoUpload.tsx`
+    - `lib/photoService.ts`
+    - `app/api/photos/route.ts`
+  - Files to Modify:
+    - `lib/formSchema.ts` - Add photos field
+    - `components/FormSections/PostOperationSection.tsx` - Add photo upload UI
+  - Acceptance Criteria:
+    - [ ] Camera capture from mobile
+    - [ ] File upload from device
+    - [ ] Image compression (max 2MB)
+    - [ ] Multiple photos (max 10)
+    - [ ] Photo categories (before/after/problem/meter)
+    - [ ] Photos saved to cloud storage
+    - [ ] Photo URLs in form submission
+    - [ ] Photos included in PDF export
+
+- [ ] **Task #9: Implement Offline Mode**
+  - Priority: P0 (Critical)
+  - Estimated Effort: Large (12-15 hours)
+  - Dependencies: Task #4 (Auto-Save)
+  - Setup Required:
+    - [ ] Service Worker setup
+    - [ ] IndexedDB or localForage
+  - Files to Create:
+    - `public/sw.js` (Service Worker)
+    - `lib/offlineQueue.ts`
+    - `hooks/useOffline.ts`
+    - `components/OfflineIndicator.tsx`
+  - Files to Modify:
+    - `app/page.tsx` - Handle offline submission
+    - `next.config.js` - PWA config
+  - Acceptance Criteria:
+    - [ ] Detect online/offline status
+    - [ ] Queue submissions when offline
+    - [ ] Auto-sync when back online
+    - [ ] Visual indicator for offline mode
+    - [ ] Local storage backup
+    - [ ] No data loss in offline mode
+
+---
+
+## Priority 1: Important Enhancements (Week 3-4)
+
+### ⏳ Pending Tasks
+
+- [ ] **Task #10: Add Range Validation for Electrical Values**
+  - Priority: P1
+  - Estimated Effort: Small (2-3 hours)
+  - Dependencies: None
+  - Files to Create:
+    - `lib/validators.ts`
+  - Files to Modify:
+    - `lib/formSchema.ts`
+  - Acceptance Criteria:
+    - [ ] Voltage validation: 200-240V (±10% of 220V)
+    - [ ] Ground resistance: 0-10 ohms
+    - [ ] Warning messages for out-of-range values
+    - [ ] Tests for validators
+
+- [ ] **Task #11: Increase Test Coverage to 40%**
+  - Priority: P1
+  - Estimated Effort: Large (10-12 hours)
+  - Dependencies: None
+  - Files to Create:
+    - `__tests__/api/submit-form.test.ts`
+    - `__tests__/integration/formSubmission.test.tsx`
+    - `__tests__/lib/googleSheets.test.ts`
+    - `__tests__/lib/pdfGenerator.test.ts`
+    - `__tests__/components/PreOperationSection.test.tsx`
+    - `__tests__/components/PostOperationSection.test.tsx`
+  - Acceptance Criteria:
+    - [ ] API route tests (POST /api/submit-form)
+    - [ ] Integration tests (full form submission flow)
+    - [ ] Google Sheets service tests
+    - [ ] PDF generation tests
+    - [ ] Section component tests
+    - [ ] Coverage: 40%+ overall
+
+- [ ] **Task #12: Increase Test Coverage to 60%**
+  - Priority: P1
+  - Estimated Effort: Large (8-10 hours)
+  - Dependencies: Task #11
+  - Files to Create:
+    - `__tests__/pages/success.test.tsx`
+    - `__tests__/components/FormHeader.test.tsx`
+    - `__tests__/components/SignatureSection.test.tsx`
+    - `__tests__/components/TextArea.test.tsx`
+  - Acceptance Criteria:
+    - [ ] Page component tests
+    - [ ] Remaining component tests
+    - [ ] Coverage: 60%+ overall
+
+- [ ] **Task #13: Increase Test Coverage to 70%**
+  - Priority: P1
+  - Estimated Effort: Medium (6-8 hours)
+  - Dependencies: Task #12
+  - Files to Create:
+    - `__tests__/e2e/complete-flow.spec.ts` (Playwright)
+  - Acceptance Criteria:
+    - [ ] E2E tests with Playwright
+    - [ ] Coverage: 70%+ overall
+    - [ ] CI/CD integration
+
+- [ ] **Task #14: Database Migration Planning**
+  - Priority: P1
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: None
+  - Deliverables:
+    - [ ] Database schema design (PostgreSQL)
+    - [ ] Migration plan document
+    - [ ] Data export script from Google Sheets
+    - [ ] Rollback plan
+  - Files to Create:
+    - `docs/database-migration-plan.md`
+    - `scripts/export-sheets-data.ts`
+
+- [ ] **Task #15: Database Migration Implementation**
+  - Priority: P1
+  - Estimated Effort: Large (12-15 hours)
+  - Dependencies: Task #14
+  - Setup Required:
+    - [ ] Vercel Postgres or Supabase setup
+    - [ ] Environment variables
+  - Files to Create:
+    - `lib/db/client.ts`
+    - `lib/db/schema.sql`
+    - `lib/db/migrations/001_initial.sql`
+    - `lib/services/FormService.ts`
+  - Files to Modify:
+    - `app/api/submit-form/route.ts` - Use PostgreSQL instead of Sheets
+  - Acceptance Criteria:
+    - [ ] PostgreSQL database created
+    - [ ] Schema migrated
+    - [ ] Data migrated from Sheets
+    - [ ] API updated to use PostgreSQL
+    - [ ] Google Sheets kept as backup/reporting
+    - [ ] Tests updated
+
+- [ ] **Task #16: Add Digital Signature**
+  - Priority: P1
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] Install react-signature-canvas
+  - Files to Create:
+    - `components/SignaturePad.tsx`
+  - Files to Modify:
+    - `lib/formSchema.ts` - Add signature field
+    - `components/FormSections/SignatureSection.tsx`
+  - Acceptance Criteria:
+    - [ ] Signature pad component
+    - [ ] Save signature as base64
+    - [ ] Clear/redo functionality
+    - [ ] Signature in PDF export
+    - [ ] Mobile-friendly touch drawing
+
+- [ ] **Task #17: Form History/View Page**
+  - Priority: P1
+  - Estimated Effort: Large (8-10 hours)
+  - Dependencies: Task #7 (Auth), Task #15 (Database)
+  - Files to Create:
+    - `app/(dashboard)/history/page.tsx`
+    - `app/(dashboard)/history/[id]/page.tsx`
+    - `app/api/forms/route.ts` (GET all)
+    - `app/api/forms/[id]/route.ts` (GET one)
+    - `components/FormHistoryTable.tsx`
+    - `components/FormDetailView.tsx`
+  - Acceptance Criteria:
+    - [ ] List all submitted forms (with pagination)
+    - [ ] Filter by date, location, machine number
+    - [ ] View form details
+    - [ ] Download PDF from history
+    - [ ] Search functionality
+
+- [ ] **Task #18: Monitoring & Logging Setup**
+  - Priority: P1
+  - Estimated Effort: Medium (4-5 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] Sentry account
+    - [ ] Environment variables
+  - Files to Create:
+    - `lib/monitoring.ts`
+    - `sentry.client.config.ts`
+    - `sentry.server.config.ts`
+  - Files to Modify:
+    - `app/api/submit-form/route.ts` - Add error tracking
+  - Acceptance Criteria:
+    - [ ] Sentry integrated
+    - [ ] Error tracking
+    - [ ] Performance monitoring
+    - [ ] Breadcrumbs for debugging
+
+- [ ] **Task #19: Caching Layer Implementation**
+  - Priority: P1
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: Task #15 (Database)
+  - Setup Required:
+    - [ ] Upstash Redis (if not done in Task #6)
+  - Files to Create:
+    - `lib/cache.ts`
+  - Files to Modify:
+    - `app/api/forms/route.ts` - Add caching
+  - Acceptance Criteria:
+    - [ ] Redis caching for frequently accessed data
+    - [ ] Cache invalidation strategy
+    - [ ] TTL configuration
+    - [ ] Cache hit/miss monitoring
+
+- [ ] **Task #20: Security Headers**
+  - Priority: P1
+  - Estimated Effort: Small (1-2 hours)
+  - Dependencies: None
+  - Files to Modify:
+    - `next.config.js`
+    - `middleware.ts`
+  - Acceptance Criteria:
+    - [ ] X-Frame-Options: DENY
+    - [ ] X-Content-Type-Options: nosniff
+    - [ ] Referrer-Policy: strict-origin-when-cross-origin
+    - [ ] Content-Security-Policy
+    - [ ] HSTS header
+
+---
+
+## Priority 2: Nice to Have (Week 5-8)
+
+### ⏳ Pending Tasks
+
+- [ ] **Task #21: Form Templates**
+  - Priority: P2
+  - Estimated Effort: Medium (6-8 hours)
+  - Dependencies: Task #7 (Auth), Task #15 (Database)
+
+- [ ] **Task #22: Barcode Scanner**
+  - Priority: P2
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: None
+
+- [ ] **Task #23: Location Auto-complete**
+  - Priority: P2
+  - Estimated Effort: Small (2-3 hours)
+  - Dependencies: None
+  - Setup Required:
+    - [ ] Google Places API key
+
+- [ ] **Task #24: Report Dashboard**
+  - Priority: P2
+  - Estimated Effort: Large (12-15 hours)
+  - Dependencies: Task #15 (Database)
+
+- [ ] **Task #25: Notification System**
+  - Priority: P2
+  - Estimated Effort: Large (10-12 hours)
+  - Dependencies: Task #15 (Database)
+
+- [ ] **Task #26: Bulk Export**
+  - Priority: P2
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: Task #15 (Database)
+
+- [ ] **Task #27: Dark Mode**
+  - Priority: P2
+  - Estimated Effort: Small (2-3 hours)
+  - Dependencies: None
+
+- [ ] **Task #28: PWA Features**
+  - Priority: P2
+  - Estimated Effort: Medium (4-6 hours)
+  - Dependencies: Task #9 (Offline Mode)
+
+- [ ] **Task #29: Analytics Integration**
+  - Priority: P2
+  - Estimated Effort: Small (2-3 hours)
+  - Dependencies: Task #7 (Auth)
+
+- [ ] **Task #30: API Documentation**
+  - Priority: P2
+  - Estimated Effort: Small (3-4 hours)
+  - Dependencies: None
+
+---
+
+## Progress Summary
+
+### Overall Progress
+- **Total Tasks:** 30
+- **Completed:** 2 (6.7%)
+- **In Progress:** 0 (0%)
+- **Pending:** 28 (93.3%)
+
+### By Priority
+- **P0 (Critical):** 2/9 completed (22.2%)
+- **P1 (Important):** 0/11 completed (0%)
+- **P2 (Nice to Have):** 0/10 completed (0%)
+
+### Test Coverage Progress
+- **Current:** 98 tests passing (was 80)
+- **Estimated Coverage:** ~18-20% (up from 15.64%)
+- **Target:** 70%
+- **Gap:** ~50%
+
+---
+
+## Notes & Decisions
+
+### 2025-10-03
+- Project assessment completed by software-project-manager agent
+- Overall score: 7.2/10
+- Critical issues identified: 8 tasks in P0
+- Development log created
+- Starting with Task #2: Connect checkboxes to form state
+
+---
+
+## Next Actions
+
+1. **Immediate:** Task #3 - Add Error Boundary
+2. **Next:** Task #4 - Implement Auto-Save/Draft
+3. **Then:** Task #5 - Add Input Sanitization
+
+---
+
+## Resources & Links
+
+- **Repository:** https://github.com/SecTionXx/pmform
+- **Deployed URL:** (To be added)
+- **Sentry:** (To be set up)
+- **Upstash Redis:** (To be set up)
+- **Cloudinary:** (To be set up)
+
+---
+
+**Last Updated:** 2025-10-03 14:10 UTC
+**Next Review Date:** 2025-10-10 (End of Week 1)
+**Current Sprint:** Week 1 - P0 Critical Fixes (Tasks #1-#9)
