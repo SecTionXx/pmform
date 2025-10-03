@@ -28,7 +28,7 @@ export const PostOperationSection: React.FC<PostOperationSectionProps> = ({
         <div className="space-y-2">
           {WORK_PROCEDURES.map((procedure, index) => (
             <div key={index} className="flex items-start gap-3">
-              <input type="checkbox" className="mt-1" disabled />
+              <input type="checkbox" className="mt-1" />
               <span className="leading-relaxed">{procedure}</span>
             </div>
           ))}
