@@ -134,6 +134,52 @@
     - [x] HTML entities encoded
     - [x] Script tags removed
     - [x] Tests for sanitization
+  - Commit: 0da9a2c
+
+- [x] **Task #6: Implement Rate Limiting**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~2 hours
+  - Files Created:
+    - `lib/rateLimit.ts` - In-memory rate limiting utility
+    - `middleware.ts` - Next.js middleware for rate limiting
+    - `__tests__/lib/rateLimit.test.ts` - 24 new tests
+  - Features Implemented:
+    - In-memory rate limiting (10 requests per minute per IP)
+    - IP extraction from multiple proxy headers (Cloudflare, Vercel, etc.)
+    - Rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset)
+    - 429 Too Many Requests response
+    - Automatic cleanup of expired rate limit records
+    - Support for custom identifiers and configurations
+    - Status checking without incrementing count
+    - Manual reset capabilities
+  - Middleware Features:
+    - Applies to all /api/* routes
+    - Extracts client IP from various proxy headers
+    - Returns 429 with Thai error message when limit exceeded
+    - Includes Retry-After header
+    - Adds rate limit headers to all API responses
+  - Security Features:
+    - DDoS protection (basic)
+    - Brute force prevention
+    - API abuse prevention
+    - Configurable limits per route (extensible)
+  - Production Notes:
+    - Current implementation uses in-memory storage
+    - For production with multiple instances, consider Redis (Upstash)
+    - Automatic cleanup runs every 10 minutes
+  - Test Results: 183 tests passing (24 new rate limit tests)
+  - Test Coverage:
+    - Rate limit logic (window expiry, multiple identifiers)
+    - IP extraction from various headers
+    - Header generation
+    - Reset and clear functionality
+    - Integration scenarios
+  - Acceptance Criteria Met:
+    - [x] Rate limit: 10 requests per minute per IP
+    - [x] 429 response for exceeded limits
+    - [x] Rate limit headers included
+    - [x] Tests for rate limiting
   - Commit: (pending)
 
 ### 🔄 In Progress
@@ -142,7 +188,7 @@ None
 
 ### ⏳ Pending Tasks
 
-- [ ] **Task #6: Implement Rate Limiting**
+- [ ] **Task #7: Implement Authentication**
   - Priority: P0 (Critical)
   - Estimated Effort: Medium (3-4 hours)
   - Dependencies: None
