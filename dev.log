@@ -64,6 +64,39 @@
     - [x] User-friendly error message displayed
     - [x] Error logged to console (ready for Sentry)
     - [x] Reset/retry functionality
+  - Commit: d5de6ce
+
+- [x] **Task #4: Implement Auto-Save/Draft**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~2 hours
+  - Files Created:
+    - `lib/storage.ts` - localStorage wrapper with TypeScript support
+    - `hooks/useAutoSave.ts` - Auto-save hook (saves every 30s)
+    - `hooks/useFormDraft.ts` - Draft management hook
+  - Files Modified:
+    - `app/page.tsx` - Integrated auto-save and draft loading
+  - Features Implemented:
+    - Auto-save form data every 30 seconds to localStorage
+    - Draft detection on page load with prompt dialog
+    - "Load Draft" or "Start New" options
+    - Real-time save indicator with spinner
+    - Last saved timestamp display (relative time)
+    - Draft automatically cleared after successful submission
+    - Multiple draft support by form ID
+    - Error handling for localStorage unavailable
+    - Type-safe storage wrapper
+    - Draft age calculation
+  - UI Components:
+    - Modal dialog for draft prompt (Thai language)
+    - Auto-save indicator with checkmark/spinner
+    - Relative time display (e.g., "2 นาทีที่แล้ว")
+  - Acceptance Criteria Met:
+    - [x] Auto-save to localStorage every 30 seconds
+    - [x] Load draft on page mount
+    - [x] Show "Draft saved at HH:mm" indicator
+    - [x] Clear draft after successful submission
+    - [x] Multiple drafts support (by form ID)
   - Commit: (pending)
 
 ### 🔄 In Progress
@@ -71,23 +104,6 @@
 None
 
 ### ⏳ Pending Tasks
-
-- [ ] **Task #4: Implement Auto-Save/Draft**
-  - Priority: P0 (Critical)
-  - Estimated Effort: Medium (4-6 hours)
-  - Dependencies: None
-  - Files to Create:
-    - `hooks/useAutoSave.ts`
-    - `hooks/useFormDraft.ts`
-    - `lib/storage.ts` (localStorage wrapper)
-  - Files to Modify:
-    - `app/page.tsx` - Integrate auto-save hook
-  - Acceptance Criteria:
-    - [ ] Auto-save to localStorage every 30 seconds
-    - [ ] Load draft on page mount
-    - [ ] Show "Draft saved at HH:mm" indicator
-    - [ ] Clear draft after successful submission
-    - [ ] Multiple drafts support (by form ID)
 
 - [ ] **Task #5: Add Input Sanitization**
   - Priority: P0 (Critical)
@@ -438,12 +454,12 @@ None
 
 ### Overall Progress
 - **Total Tasks:** 30
-- **Completed:** 3 (10%)
+- **Completed:** 4 (13.3%)
 - **In Progress:** 0 (0%)
-- **Pending:** 27 (90%)
+- **Pending:** 26 (86.7%)
 
 ### By Priority
-- **P0 (Critical):** 3/9 completed (33.3%)
+- **P0 (Critical):** 4/9 completed (44.4%)
 - **P1 (Important):** 0/11 completed (0%)
 - **P2 (Nice to Have):** 0/10 completed (0%)
 
@@ -452,6 +468,7 @@ None
 - **Estimated Coverage:** ~20-22% (up from 15.64%)
 - **Target:** 70%
 - **Gap:** ~48-50%
+- **Note:** Auto-save feature not yet covered by tests
 
 ---
 
@@ -468,9 +485,9 @@ None
 
 ## Next Actions
 
-1. **Immediate:** Task #4 - Implement Auto-Save/Draft
-2. **Next:** Task #5 - Add Input Sanitization
-3. **Then:** Task #6 - Implement Rate Limiting
+1. **Immediate:** Task #5 - Add Input Sanitization
+2. **Next:** Task #6 - Implement Rate Limiting
+3. **Then:** Task #7 - Implement Authentication
 
 ---
 
@@ -484,7 +501,7 @@ None
 
 ---
 
-**Last Updated:** 2025-10-03 14:20 UTC
+**Last Updated:** 2025-10-03 14:50 UTC
 **Next Review Date:** 2025-10-10 (End of Week 1)
 **Current Sprint:** Week 1 - P0 Critical Fixes (Tasks #1-#9)
-**Sprint Progress:** 3/9 tasks completed (33.3%)
+**Sprint Progress:** 4/9 tasks completed (44.4%)
