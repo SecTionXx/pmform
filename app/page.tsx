@@ -28,6 +28,16 @@ export default function Home() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
+    defaultValues: {
+      work_procedures: {
+        step1: false,
+        step2: false,
+        step3: false,
+        step4: false,
+        step5: false,
+        step6: false,
+      },
+    },
   });
 
   const {

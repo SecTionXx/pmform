@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, FieldValues } from 'react-hook-form';
 import { draftStorage } from '@/lib/storage';
 
-interface UseFormDraftOptions<T> {
+interface UseFormDraftOptions<T extends FieldValues> {
   formId: string;
   form: UseFormReturn<T>;
   onDraftLoaded?: (data: T) => void;
@@ -28,7 +28,7 @@ interface UseFormDraftReturn {
  *   form: formMethods,
  * });
  */
-export function useFormDraft<T>({
+export function useFormDraft<T extends FieldValues>({
   formId,
   form,
   onDraftLoaded,
