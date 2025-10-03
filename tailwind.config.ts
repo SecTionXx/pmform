@@ -17,7 +17,29 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: any) {
+      const newUtilities = {
+        '.page-break-before': {
+          'page-break-before': 'always',
+          'break-before': 'page',
+        },
+        '.page-break-after': {
+          'page-break-after': 'always',
+          'break-after': 'page',
+        },
+        '.page-break-inside-avoid': {
+          'page-break-inside': 'avoid',
+          'break-inside': 'avoid',
+        },
+        '.page-break-inside-auto': {
+          'page-break-inside': 'auto',
+          'break-inside': 'auto',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
 
 export default config;
