@@ -97,6 +97,43 @@
     - [x] Show "Draft saved at HH:mm" indicator
     - [x] Clear draft after successful submission
     - [x] Multiple drafts support (by form ID)
+  - Commit: e1f2555
+
+- [x] **Task #5: Add Input Sanitization**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~2.5 hours
+  - Files Created:
+    - `lib/sanitize.ts` - Comprehensive sanitization utilities (XSS prevention)
+    - `__tests__/lib/sanitize.test.ts` - 48 new tests
+  - Files Modified:
+    - `app/api/submit-form/route.ts` - Added sanitization layer before validation
+  - Features Implemented:
+    - String sanitization: HTML entity encoding, script tag removal, event handler removal
+    - Object sanitization: Recursive sanitization for nested objects and arrays
+    - Form data sanitization: Suspicious pattern detection with warnings
+    - Filename sanitization: Path traversal prevention, safe character filtering
+    - Additional utilities: stripHtml, isValidEmail, isValidThaiPhone, isValidUrl, etc.
+    - Warning system: Logs suspicious content detection (ready for security monitoring)
+  - Security Measures:
+    - HTML special characters encoded (&, <, >, ", ', /)
+    - Script tags removed (case insensitive)
+    - Event handlers removed (onclick, onerror, etc.)
+    - javascript: protocol removed
+    - data:text/html protocol removed
+    - Null bytes removed
+    - Path traversal attacks prevented in filenames
+  - Test Results: 159 tests passing (was 111)
+  - Test Coverage:
+    - 48 comprehensive tests for sanitization utilities
+    - XSS attack vector testing
+    - Edge case handling (null, undefined, empty strings)
+    - Validation utilities testing
+  - Acceptance Criteria Met:
+    - [x] All string inputs sanitized (XSS prevention)
+    - [x] HTML entities encoded
+    - [x] Script tags removed
+    - [x] Tests for sanitization
   - Commit: (pending)
 
 ### 🔄 In Progress
@@ -104,20 +141,6 @@
 None
 
 ### ⏳ Pending Tasks
-
-- [ ] **Task #5: Add Input Sanitization**
-  - Priority: P0 (Critical)
-  - Estimated Effort: Small (2-3 hours)
-  - Dependencies: None
-  - Files to Create:
-    - `lib/sanitize.ts`
-  - Files to Modify:
-    - `app/api/submit-form/route.ts`
-  - Acceptance Criteria:
-    - [ ] All string inputs sanitized (XSS prevention)
-    - [ ] HTML entities encoded
-    - [ ] Script tags removed
-    - [ ] Tests for sanitization
 
 - [ ] **Task #6: Implement Rate Limiting**
   - Priority: P0 (Critical)

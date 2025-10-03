@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { formSchema } from '@/lib/formSchema';
 import { appendToGoogleSheet } from '@/lib/googleSheets';
+import { sanitizeFormData } from '@/lib/sanitize';
 
 export async function POST(request: NextRequest) {
   try {
     // Parse request body
     const body = await request.json();
 
-    // Validate form data
-    const validatedData = formSchema.parse(body);
+    // Sanitize input data (XSS prevention)
+    const { sanitized, warnings } = sanitizeFormData(body);
+
+    // Log warnings if suspicious content detected
+    if (warnings.length > 0) {
+      console.warn('Input sanitization warnings:', warnings);
+    }
+
+    // Validate form data with Zod
+    const validatedData = formSchema.parse(sanitized);
 
     // Save to Google Sheets
     const result = await appendToGoogleSheet(validatedData);
