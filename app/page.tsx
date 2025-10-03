@@ -7,6 +7,7 @@ import { FormHeader } from '@/components/FormHeader';
 import { PreOperationSection } from '@/components/FormSections/PreOperationSection';
 import { PostOperationSection } from '@/components/FormSections/PostOperationSection';
 import { SignatureSection } from '@/components/FormSections/SignatureSection';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -71,9 +72,17 @@ export default function Home() {
         <FormHeader />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <PreOperationSection register={register} errors={errors} />
-          <PostOperationSection register={register} control={control} errors={errors} />
-          <SignatureSection />
+          <ErrorBoundary>
+            <PreOperationSection register={register} errors={errors} />
+          </ErrorBoundary>
+
+          <ErrorBoundary>
+            <PostOperationSection register={register} control={control} errors={errors} />
+          </ErrorBoundary>
+
+          <ErrorBoundary>
+            <SignatureSection />
+          </ErrorBoundary>
 
           {submitError && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">

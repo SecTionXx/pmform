@@ -38,6 +38,32 @@
     - [x] Data saved to Google Sheets
     - [x] Data will be included in PDF export (handled by form data)
     - [x] Tests added for checkbox functionality (18 tests)
+  - Commit: d3d2166
+
+- [x] **Task #3: Add Error Boundary**
+  - Status: COMPLETED
+  - Date: 2025-10-03
+  - Duration: ~1 hour
+  - Files Created:
+    - `app/error.tsx` - Next.js global error handler
+    - `components/ErrorBoundary.tsx` - Reusable ErrorBoundary component
+    - `__tests__/components/ErrorBoundary.test.tsx` - 13 new tests
+  - Files Modified:
+    - `app/page.tsx` - Wrapped form sections with ErrorBoundary
+  - Test Results: 111 tests passing (was 98)
+  - Features Implemented:
+    - Global error handling with Next.js error.tsx
+    - Reusable ErrorBoundary component with reset functionality
+    - Custom fallback UI support
+    - Error logging (console in dev, ready for Sentry in prod)
+    - Isolated error boundaries for each form section
+    - Thai language error messages
+    - User-friendly error UI with retry button
+  - Acceptance Criteria Met:
+    - [x] Global error boundary catches runtime errors
+    - [x] User-friendly error message displayed
+    - [x] Error logged to console (ready for Sentry)
+    - [x] Reset/retry functionality
   - Commit: (pending)
 
 ### 🔄 In Progress
@@ -45,19 +71,6 @@
 None
 
 ### ⏳ Pending Tasks
-
-- [ ] **Task #3: Add Error Boundary**
-  - Priority: P0 (Critical)
-  - Estimated Effort: Small (1-2 hours)
-  - Dependencies: None
-  - Files to Create:
-    - `app/error.tsx`
-    - `components/ErrorBoundary.tsx`
-  - Acceptance Criteria:
-    - [ ] Global error boundary catches runtime errors
-    - [ ] User-friendly error message displayed
-    - [ ] Error logged to console (future: Sentry)
-    - [ ] Reset/retry functionality
 
 - [ ] **Task #4: Implement Auto-Save/Draft**
   - Priority: P0 (Critical)
@@ -425,20 +438,20 @@ None
 
 ### Overall Progress
 - **Total Tasks:** 30
-- **Completed:** 2 (6.7%)
+- **Completed:** 3 (10%)
 - **In Progress:** 0 (0%)
-- **Pending:** 28 (93.3%)
+- **Pending:** 27 (90%)
 
 ### By Priority
-- **P0 (Critical):** 2/9 completed (22.2%)
+- **P0 (Critical):** 3/9 completed (33.3%)
 - **P1 (Important):** 0/11 completed (0%)
 - **P2 (Nice to Have):** 0/10 completed (0%)
 
 ### Test Coverage Progress
-- **Current:** 98 tests passing (was 80)
-- **Estimated Coverage:** ~18-20% (up from 15.64%)
+- **Current:** 111 tests passing (was 80, +38.75%)
+- **Estimated Coverage:** ~20-22% (up from 15.64%)
 - **Target:** 70%
-- **Gap:** ~50%
+- **Gap:** ~48-50%
 
 ---
 
@@ -455,9 +468,9 @@ None
 
 ## Next Actions
 
-1. **Immediate:** Task #3 - Add Error Boundary
-2. **Next:** Task #4 - Implement Auto-Save/Draft
-3. **Then:** Task #5 - Add Input Sanitization
+1. **Immediate:** Task #4 - Implement Auto-Save/Draft
+2. **Next:** Task #5 - Add Input Sanitization
+3. **Then:** Task #6 - Implement Rate Limiting
 
 ---
 
@@ -471,6 +484,7 @@ None
 
 ---
 
-**Last Updated:** 2025-10-03 14:10 UTC
+**Last Updated:** 2025-10-03 14:20 UTC
 **Next Review Date:** 2025-10-10 (End of Week 1)
 **Current Sprint:** Week 1 - P0 Critical Fixes (Tasks #1-#9)
+**Sprint Progress:** 3/9 tasks completed (33.3%)
