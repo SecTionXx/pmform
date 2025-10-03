@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #4e2a84;
+  --secondary: #c41e3a;
+  --background: #f5f5f5;
+}
+
+body {
+  font-family: 'Sarabun', 'Tahoma', sans-serif;
+  background-color: var(--background);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
