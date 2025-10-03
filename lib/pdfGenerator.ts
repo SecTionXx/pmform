@@ -17,11 +17,14 @@ export async function generatePDF(data: FormValues) {
 
     // Convert HTML to canvas with Thai font support
     const canvas = await html2canvas(formElement, {
-      scale: 2,
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-    });
+      width: formElement.scrollWidth,
+      height: formElement.scrollHeight,
+      windowWidth: formElement.scrollWidth,
+      windowHeight: formElement.scrollHeight,
+    } as any);
 
     // Show buttons again
     buttons.forEach(btn => (btn as HTMLElement).style.display = '');
